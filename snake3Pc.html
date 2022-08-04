@@ -1,0 +1,239 @@
+
+<!-- 
+
+Ce Jeu a ete developper par Li Li (pseudo-nom)
+
+Ce bien d'accomplir certaines choses dont on se sentait incapable d'accomplir
+
+ -->
+<!DOCTYPE html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>Bibilava</title>
+<title>Bibilava</title>
+</head>
+<body>
+
+<style>
+.mere{
+   width: 345px;
+   margin: auto;
+}
+#myCanvas{
+   background:#19ae99f2;
+   width: 345px;
+   margin: auto;
+}
+#controller{
+   width:345px;
+   height:240px;
+   background:#c1c1c1;
+   
+}
+.liny{
+   height:80px;
+   width: 345px;
+}
+.pex{
+   width:100px;
+   background:black;
+   height:inherit;
+   border-radius:20px;
+}   
+.butt {
+   width:inherit;
+   height:inherit;
+   font-size:50px;
+   color: white;
+   background: black;
+   border-radius:inherit;
+}   
+</style>
+
+<div class="mere">
+   
+<canvas id="myCanvas"  width= 345 height = 405></canvas>
+
+</div>
+
+
+<script>
+
+pausa = ()=>{
+   document.createElement("div");
+   alert("Game Over");
+}
+
+   canvas = document.getElementById("myCanvas");
+   ctx = canvas.getContext("2d");
+   
+  const pi = Math.PI;
+
+   canWi = canvas.width;
+   canHei = canvas.height;
+   
+   snaColor = "yellow";
+   teteColo = "magenta";
+   snaWei = 15;
+   
+   
+   var x;//first coord
+   var y;
+   
+  
+     
+    var food ;
+    var fcoordX;
+    var fcoordY;
+    pWei = 8;
+    pColo = "red"; 
+    
+  var tabDir2;
+  var coordoX;
+  var coordoY;
+ 
+append = ()=>{
+tabDir = new Array();
+le = tabDir2.length;
+
+for(var i = 0 ; i <= tabDir2[le - 1].length ; i++){
+   if(i < 2){
+     tabDir[i] = tabDir2[le - 1][0];          
+   }
+   else {
+      tabDir[i] = tabDir2[le - 1][i - 1];
+   }
+}
+      
+tabDir2[le] = tabDir;
+            
+if(tabDir2[le -1][0] == 'h'){coordoX[le] = coordoX[le -1];coordoY[le] = coordoY[le-1] + snaWei;}
+if(tabDir2[le - 1][0] == 'b'){coordoX[le] = coordoX[le -1];coordoY[le] = coordoY[le-1] - snaWei;}
+if(tabDir2[le -1][0] == 'g'){coordoX[le] = coordoX[le -1] + snaWei;coordoY[le] = coordoY[le-1];}
+if(tabDir2[le -1][0] == 'd'){coordoX[le] = coordoX[le -1] - snaWei;coordoY[le] = coordoY[le-1];}
+                       
+}
+
+  var pause;
+  debut = ()=>{    
+   x = snaWei*10;//par carre du2qe snaWei
+   y = snaWei*10;  
+  ctx.clearRect(0,0,canWi,canHei);    
+  tabDir = new Array('d');
+  tabDir2 = new Array();
+  tabDir2[0] = tabDir;
+  
+  coordoX = new Array();
+  coordoX[0] = x;
+  coordoY = new Array();
+  coordoY[0] = y;
+   
+   for (var i = 3; i > 0; i--) {
+      append();
+   }
+
+   fcoordX = (snaWei/2) + Math.floor(Math.random()*(22))*snaWei;
+   fcoordY = (snaWei/2) + Math.floor(Math.random()*(26))*snaWei;
+ 
+  ctx.fillStyle = pColo;
+  ctx.beginPath();
+  ctx.arc(fcoordX,fcoordY,pWei,0,pi*2);
+  ctx.fill();
+  ctx.fillRect(x,y,snaWei,snaWei);
+  pause = 0;
+  requestAnimationFrame(move);
+   } 
+  
+  // var forbiddenX = new Array();forbiddenX[0] = x + snaWei/2; var forbiddenY = new Array();forbiddenY[0] = y +  snaWei/2;
+   
+   
+      
+   
+  
+
+   
+  haut = ()=>{if(tabDir2[0][0] != 'b'){for(var i = 0 ; i < tabDir2.length;i++){tabDir2[i][tabDir2[i].length - 1] = 'h';}}}
+  bas= ()=>{if(tabDir2[0][0] != 'h'){ for(var i = 0 ; i < tabDir2.length;i++){tabDir2[i][tabDir2[i].length - 1] = 'b';}}}
+  gauche = ()=>{if(tabDir2[0][0] != 'd'){ for(var i = 0 ; i < tabDir2.length;i++){tabDir2[i][tabDir2[i].length - 1] = 'g';}}}
+  droite = ()=>{if(tabDir2[0][0] != 'g'){ for(var i = 0 ; i < tabDir2.length;i++){tabDir2[i][tabDir2[i].length - 1] = 'd';}}}
+            
+       
+   var duree = 200;
+   var nTime = 0;
+   var pause = 0;
+   move = (cTime)=>{
+      //ctx.fillStyle = snaColor;
+      if(cTime < nTime){
+         requestAnimationFrame(move);
+         return;
+      }
+      nTime = cTime + duree;
+                
+     
+      for(var i = 0; i < tabDir2.length; i++){
+      
+      if(tabDir2[i][0] == 'h'){vitX = 0; vitY = -snaWei; }
+      if(tabDir2[i][0] == 'b'){vitX = 0; vitY = snaWei; }
+      if(tabDir2[i][0] == 'g'){vitX = - snaWei; vitY = 0; }
+      if(tabDir2[i][0] == 'd'){vitX = snaWei;vitY = 0; }
+     
+       if(i != 0){
+       lee = tabDir2[i].length;          
+      tabDir2[i][lee] = tabDir2[0][0];          
+       tabDir2[i].shift();
+       }      
+      x = coordoX[i] + vitX;
+      y = coordoY[i] + vitY;
+      coordoX[i] = x;
+      coordoY[i] = y;
+   }
+     if(coordoX[0] < 0 || coordoX[0] >= canWi){pause = 1;}
+    else if(coordoY[0] < 0 || coordoY[0] >= canHei){pause = 1;}
+   for(var i =1;i < tabDir2.length;i++){
+      if(coordoX[0] == coordoX[i] && coordoY[0] == coordoY[i]){pause = 1;break;}
+   }
+   if(!pause){
+   ctx.clearRect(0,0,canWi,canHei);
+   if((coordoX[0] + snaWei/2) == fcoordX && (coordoY[0] + snaWei/2) == fcoordY){
+      append();
+      fcoordX = (snaWei/2) + Math.floor(Math.random()*(22))*snaWei;
+      fcoordY = (snaWei/2) + Math.floor(Math.random()*(26))*snaWei;                  
+   }
+   
+   ctx.fillStyle = pColo;
+   ctx.beginPath();
+   ctx.arc(fcoordX,fcoordY,pWei,0,pi*2);
+   ctx.fill();
+   
+   ctx.fillStyle = snaColor;
+   for(var i =0 ; i < tabDir2.length;i++){
+      
+      ctx.fillRect(coordoX[i],coordoY[i],snaWei,snaWei);
+   }
+   requestAnimationFrame(move);
+   
+   }
+   else {
+     //pausa();
+     if(confirm("Voulez-vous continuez ?" )){
+        ctx.clearRect(0,0,canWi,canHei);
+        debut();
+        
+     }
+   }
+  }
+  
+exec = (e) => {
+   if (e.keyCode == 37) {gauche();}
+   if (e.keyCode == 38) {haut();}
+   if (e.keyCode == 39) {droite();}
+   if (e.keyCode == 40) {bas();}
+}
+
+   window.onload = () =>{document.onkeydown = exec;}
+   
+   debut();
+</script>
+</body>
+</html>
